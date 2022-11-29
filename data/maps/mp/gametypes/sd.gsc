@@ -568,7 +568,10 @@ destructionverify( bombzones )
 {
     foreach( bombzone in bombzones )
     {
-        println( "Bombsite " + bombzone.script_label + " VisibleTeam: "  + bombzone.visibleTeam);
+        println( "Bombsite " + bombzone.label ); 
+        println( "interactTeam: " + bombzone.interactTeam );
+        println( "VisibleTeam: " + bombzone.visibleTeam );
+        println( "Disabled Trigger: " + bombzone.trigger.trigger_off );
     }
 }
 
@@ -602,8 +605,6 @@ bombplanted( destroyedObj, player )
     else
         level.bplanted = 0;
 
-    destructionverify(level.bombzones);
-
     destroyedObj restarttimer();
     destroyedObj setbombtimerdvar();
     setuibombtimer( destroyedObj.label, 0 );
@@ -619,6 +620,8 @@ bombplanted( destroyedObj, player )
 
     destroyedObj onbombexploded( explosionOrigin, 200, player );
     destroyedObj maps\mp\gametypes\_gameobjects::disableobject();
+
+    destructionverify(level.bombzones);
 
     bonusTime = false;
 
