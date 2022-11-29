@@ -92,7 +92,7 @@ bot_dd_think()
 
     for (;;)
     {
-        wait 0.05;
+        wait 10.0;//0.05;
 
         if ( isdefined( self.current_bombzone ) && !bombzone_is_active( self.current_bombzone ) )
         {
@@ -134,7 +134,7 @@ bot_dd_think()
                 self investigate_someone_using_bomb();
             else if ( self.id_941D == "atk_bomber" )
             {
-                println(self.team + ": Bot " + self.name + " will try to plant bomb.");
+                //println(self.team + ": Bot " + self.name + " will try to plant bomb.");
                 self plant_bomb();
             }
             continue;
@@ -146,7 +146,7 @@ bot_dd_think()
             continue;
 
         self bot_choose_defend_role();
-
+        
         if ( self._id_941D == "defend_zone" )
         {
             if ( !self maps\mp\bots\_bots_util::bot_is_defending_point( self.current_bombzone.curorigin ) )
@@ -165,7 +165,7 @@ bot_dd_think()
         }
 
         if ( self._id_941D == "defuser" )
-            println(self.team + ": Bot " + self.name + " will try to defuse bomb.");
+            //println(self.team + ": Bot " + self.name + " will try to defuse bomb.");
             self defuse_bomb();
     }
 }
@@ -264,13 +264,13 @@ plant_bomb()
         }
 
         emergency_plant = (last_chance_to_plant > 0) && (GetTime() >= last_chance_to_plant);
-        println(self.team + ": Bot " + self.name + " is planting...");
+        //println(self.team + ": Bot " + self.name + " is planting...");
         succeeded = self _id_942D( level.plantTime + 2, "bomb_planted", emergency_plant );
         self botclearscriptgoal();
 
         if (succeeded)
         {
-            println("Bot planted bomb!");
+            //println("Bot planted bomb!");
             self bot_dd_clear_role();
         }
     }
@@ -336,7 +336,7 @@ _id_942D( var_0, var_1, var_2 ) // sd_press_use
         thread notify_on_damage();
     }
 
-    println(self.team + ": Bot " + self.name + "will try to +use bombsite...");
+    //println(self.team + ": Bot " + self.name + " will try to +use bombsite...");
     self botpressbutton( "use", var_0 );
     var_4 = self maps\mp\bots\_bots_util::bot_usebutton_wait( var_0, var_1, "use_interrupted" );
     self botsetstance( "none" );
@@ -457,7 +457,7 @@ defuse_bomb()
 
         if (succeeded)
         {
-            println("Bot defused bomb!");
+            //println("Bot defused bomb!");
             self bot_dd_clear_role();
         }
     }
@@ -533,10 +533,41 @@ get_player_planting_zone( var_0 )
 
 bombzone_is_active( var_0 )
 {
-    if ( var_0.visibleteam == "any" )
+    if ( var_0._id_89F5 == "any" ) // visibleteam
+    {
+        //println("Bombzone " + var_0.label + " is active");
+        //println( "Disabled Trigger: " + var_0.trigger.trigger_off );
         return 1;
+    }
 
+    //println("Bombzone " + var_0.label + " is inactive");
+    //println( "Disabled Trigger: " + var_0.trigger.trigger_off );
     return 0;
+    
+    /*if ( var_0.visibleteam == "any" )
+    {
+        println("Bombzone " + var_0.label + " is active");
+        println( "Disabled Trigger: " + var_0.trigger.trigger_off );
+        return 1;
+    }
+
+    println("Bombzone " + var_0.label + " is inactive");
+    println( "Disabled Trigger: " + var_0.trigger.trigger_off );
+    return 0;
+    */
+
+    /*
+    if ( isdefined(var_0.trigger.trigger_off) && var_0.trigger.trigger_off == true )
+    {
+        //println( "Bombzone " + var_0.label + " is inactive" );
+        //println( "Disabled Trigger: " + var_0.trigger.trigger_off );
+        return 0;
+    }
+
+    //println( "Bombzone " + var_0.label + " is active" );
+    //println( "Disabled Trigger: " + var_0.trigger.trigger_off );
+    return 1;
+    */
 }
 
 get_active_bombzones()
