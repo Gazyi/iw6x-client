@@ -92,7 +92,7 @@ bot_dd_think()
 
     for (;;)
     {
-        wait 10.0;//0.05;
+        wait 0.05;
 
         if ( isdefined( self.current_bombzone ) && !bombzone_is_active( self.current_bombzone ) )
         {
